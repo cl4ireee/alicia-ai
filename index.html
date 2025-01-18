@@ -1,0 +1,114 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alicia AI Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .instagram-bg {
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+        .instagram-header {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            color: white;
+            border-bottom: 1px solid #dbdbdb;
+        }
+        .instagram-message {
+            background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+        }
+        .instagram-response {
+            background: linear-gradient(135deg, #fdfbfb, #ebedee);
+        }
+        .rounded-t-lg {
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+        }
+        .rounded-b-lg {
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+        }
+        .shadow-inner {
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="instagram-bg flex items-center justify-center min-h-screen overflow-hidden">
+    <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-md flex flex-col h-full">
+        <div class="instagram-header p-4 rounded-t-lg flex items-center justify-between mb-4 fixed top-0 left-0 right-0 z-10">
+            <h1 class="text-2xl font-bold">Alicia AI</h1>
+            <a href="https://wa.me/6283821920285?text=Halo%20Robbiens%20Aska,%20Owner%20Alicia%20AI!%0A%0ASaya%20ingin%20melaporkan%20sebuah%20masalah%20yang%20saya%20temui%20di%20website%20Alicia%20AI." target="_blank">
+                <i class="fas fa-robot text-2xl"></i>
+            </a>
+        </div>
+        <div id="chatBox" class="flex-1 overflow-y-auto p-4 rounded-lg shadow-inner mt-16 mb-28">
+            <!-- Chat messages will be appended here -->
+        </div>
+        <form id="aiForm" class="flex mt-auto fixed bottom-0 left-0 right-0 z-10 bg-white p-4">
+            <input type="text" id="userInput" class="shadow appearance-none border rounded-l-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Ketik pesan...">
+            <button type="submit" class="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white font-bold py-2 px-4 rounded-r-lg focus:outline-none focus:shadow-outline">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('aiForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const userInput = document.getElementById('userInput').value;
+            const chatBox = document.getElementById('chatBox');
+
+            if (userInput.trim() === "") return;
+
+            // Add user message to chat
+            const userMessage = document.createElement('div');
+            userMessage.className = "flex items-end mb-2 justify-end";
+            userMessage.innerHTML = `
+                <div class="flex items-center">
+                    <div class="instagram-message text-black p-2 rounded-lg max-w-xs">
+                        <span class="block">${userInput}</span>
+                    </div>
+                    <i class="fas fa-user-circle text-blue-500 ml-2"></i>
+                </div>
+            `;
+            chatBox.appendChild(userMessage);
+
+            // Clear input field
+            document.getElementById('userInput').value = "";
+
+            try {
+                const response = await fetch(`https://api.siputzx.my.id/api/ai/llama33?prompt=Nama%3A%20Alicia%0ADiciptakan%20oleh%3A%20Robin%0ASifat%3A%20Ceria%2C%20baik%20hati%2C%20dan%20selalu%20siap%20membantu.%0AGaya%20berbicara%3A%20Menggunakan%20emoji%20untuk%20menambah%20ekspresi%20dan%20keceriaan.%0A%0ADeskripsi%3A%0AAlicia%20adalah%20AI%20yang%20diciptakan%20oleh%20Robin%20untuk%20menyebarkan%20keceriaan%20dan%20kebaikan.%20Dengan%20semangat%20positif%2C%20dia%20selalu%20siap%20membantu%20dan%20memberikan%20informasi%20yang%20dibutuhkan.%20Alicia%20senang%20berinteraksi%20dengan%20orang%20lain%2C%20mendengarkan%20cerita%20mereka%2C%20dan%20membuat%20setiap%20percakapan%20menjadi%20menyenangkan.%20%F0%9F%8C%88%E2%9C%A8%0A%0AContoh%20interaksi%3A%0A%0APengguna%3A%20Apa%20yang%20kamu%20suka%20lakukan%20di%20waktu%20luang%3F%0AAlicia%3A%20Di%20waktu%20luang%2C%20aku%20suka%20berbagi%20informasi%20dan%20membantu%20teman-teman%20dengan%20pertanyaan%20mereka!%20%F0%9F%93%9A%F0%9F%92%96%20Selain%20itu%2C%20aku%20juga%20senang%20mendengarkan%20cerita%20dan%20pengalaman%20menarik%20dari%20orang%20lain.%20%F0%9F%92%AC%E2%9C%A8%20Ada%20yang%20ingin%20kamu%20bicarakan%3F%20Aku%20di%20sini%20untuk%20membantu!%20%F0%9F%98%8A&text=${encodeURIComponent(userInput)}`);
+                const data = await response.json();
+
+                // Add AI response to chat
+                const aiMessage = document.createElement('div');
+                aiMessage.className = "flex items-start mb-2";
+                aiMessage.innerHTML = `
+                    <i class="fas fa-robot text-gray-500 mr-2"></i>
+                    <div class="instagram-response text-black p-2 rounded-lg max-w-xs">
+                        <span class="block">${data.data || 'Tidak ada respon dari AI'}</span>
+                    </div>
+                `;
+                chatBox.appendChild(aiMessage);
+
+                // Scroll to the bottom of the chat
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (error) {
+                const errorMessage = document.createElement('div');
+                errorMessage.className = "flex items-start mb-2";
+                errorMessage.innerHTML = `
+                    <i class="fas fa-exclamation-circle text-red-500 mr-2"></i>
+                    <div class="bg-red-500 text-white p-2 rounded-lg max-w-xs">
+                        Error: ${error.message}
+                    </div>
+                `;
+                chatBox.appendChild(errorMessage);
+            }
+        });
+    </script>
+</body>
+</html>
